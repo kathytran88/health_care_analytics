@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kathy Tran - Healthcare Analytics Project</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <button id="theme-toggle">Toggle Dark Mode</button>
+  <div class="container">
+    <header>
+      <h1>Healthcare Analytics: Diabetes Prediction</h1>
+      <p>Project by Kathy Tran • <a href="https://github.com/kathytran88/health_care_analytics" target="_blank">View Code on GitHub</a></p>
+    </header>
+
+    <nav>
+      <a href="#scatter">Age vs Blood Pressure</a>
+      <a href="#boxplot">Age Distribution</a>
+      <a href="#histograms">Blood Pressure Histograms</a>
+      <a href="#bmi">BMI & Diabetes</a>
+      <a href="#prevalence">Prevalence by Age</a>
+      <a href="#glu">Glucose vs Insulin</a>
+      <a href="#corr">Correlation Matrix</a>
+      <a href="#pca">PCA Scree Plot</a>
+      <a href="#roc">ROC Curve</a>
+    </nav>
+
+    
+     <section id="boxplot" class="section-row">
+      <div class="img-wrapper">
+        <img src="images/df.png" alt="Dataframe">
+      </div>
+      <div class="text-wrapper">
+        <h2>Introduction</h2>
+        <p>Diabetes is a prevalent chronic disease, and early detection using routine clinical measures can greatly improve patient outcomes. In this project, I analyze the Pima Indians Diabetes dataset (768 subjects, eight clinical features). First, I perform exploratory data analysis, compute Pearson correlations (e.g., between insulin and glucose), and conduct hypothesis tests (e.g., Welch’s t‑test on blood pressure differences across age groups). Next, I build and evaluate logistic regression models using PCA, retaining 90% of variance, and compare their accuracy and ROC AUC.</p>
+      </div>
+    </section>
+
+    <section id="scatter" class="section-row">
+      <div class="img-wrapper">
+        <img src="images/age_bp_scatter.png" alt="Scatter plot of Age vs Blood Pressure">
+      </div>
+      <div class="text-wrapper">
+        <h2># Does higher age indicate higher blood pressure?</h2>
+        <p>I began by exploring the relationship between age and diastolic blood pressure in our dataset. I created a scatterplot of each subject’s age against their measured blood pressure.<br><br>
+        To quantify how strongly age and blood pressure move together, I calculated Pearson’s correlation coefficient. This gave me a single r-value, along with its two‑tailed p‑value, confirming that the observed upward tilt of the points wasn’t due to random chance alone. In my case, the correlation coefficient fell around 0.3, indicating a clear but moderate positive association.
+<br><br>
+Conclusion: The statistically significant moderate correlation (r ≈ 0.3, p < 0.01) shows that age does contribute to higher diastolic blood pressure, but the wide scatter around the regression line makes it clear that many other factors are at play. 
+        </p>
+      </div>
+    </section>
+
+   
+    <section id="boxplot" class="section-row">
+      <div class="img-wrapper">
+        <img src="images/age_boxplot.png" alt="Boxplot of Age Distribution">
+      </div>
+      <div class="text-wrapper">
+        <h2>Age Distribution</h2>
+        <p>Since regression might not be the right choice to model the relationship between age and blood pressure, I choose to use a hypothesis test. First, I visualize the age distribution with a box plot.<br><br>
+        The thick line inside the box sits at about 29 years, telling me the median age.
+
+The box itself spans roughly 24 to 40 years, which is the interquartile range, so half of the subjects fall in that 16‑year window.
+
+The lower whisker drops down to around 21 years, and the upper whisker reaches about 64 years, marking the most extreme non‑outlier ages.
+
+Above the upper whisker, there are several outlier points up near 65 to 82 years, showing a small tail of much older individuals.
+
+Overall, the distribution is right‑skewed, with a longer tail toward higher ages, indicating that while most participants are clustered in their mid‑20s to late‑30s, a handful are significantly older.
+
+</p>
+      </div>
+    </section>
+
+    
+    <section id="histograms">
+      <h2>Blood Pressure by Age Cohort</h2>
+      <div class="paired-images">
+        <img src="images/bp_hist_young.png" alt="BP Histogram for Younger Group">
+        <img src="images/bp_hist_old.png" alt="BP Histogram for Older Group">
+      </div>
+      <p class="explanation">I split the diastolic blood pressure measurements into two cohorts: people aged 30 and older and people aged 29 and younger. Then I plotted separate histograms to compare their distributions. In each plot, the dotted gridlines help me read frequencies more easily, and the bar at zero reminds me that some entries were missing or recorded as zero.
+<br><br>
+In the group of people aged 30 and older, blood pressure values cluster between about 70 to 85 mm Hg. Frequencies rise steeply in that range and then taper off more gradually into the 90 to 110 region, creating a long tail of higher readings. The variability is relatively large, with some readings exceeding 100 mm Hg, indicating that older participants often have both higher average pressures and more extreme values.
+<br><br>
+In the group of people aged 29 and younger, the peak shifts downward, so most readings fall between about 65 to 75 mm Hg. There are far fewer values above 90 mm Hg, and the overall spread is tighter than in the older group. However, like the older group, there is still that cluster at zero, which I will treat as missing data in future analyses.
+<br><br>
+Comparing the two histograms makes the relationship between age and blood pressure clear. Younger participants tend to have lower and less variable blood pressure, while older participants show a higher average and a broader distribution. To confirm this difference statistically, I ran a one-tailed Welch’s t test, choosing Welch’s version because the two groups have unequal variances, and obtained a p value effectively equal to 0. This result indicates that older participants have significantly higher diastolic blood pressure than younger ones.
+<br><br>
+</p>
+    </section>
+
+    <!-- Section: BMI -->
+    <section id="bmi" class="section-row">
+      <div class="img-wrapper">
+        <img src="images/bmi_hist_diabetic.png" alt="BMI Histogram for Diabetic Group">
+      </div>
+      <div class="text-wrapper">
+        <h2># Do people with diabetes have higher BMI than those who don't?</h2>
+        <p>I began by splitting the data into two groups based on the diabetes outcome, and then plotted separate histograms of BMI for each group. The histogram for people with diabetes is centered around higher values and stretches further into the upper range, with most BMIs falling between about 30 and 40. The histogram for people without diabetes sits lower, with most BMIs between roughly 25 and 32 and a tighter overall spread. This visual shift to the right in the diabetes group suggests they tend to have higher BMI.<br><br>
+To confirm this difference, I computed the average BMI in each cohort and found it to be around 35 for the diabetes group versus about 30 for the non diabetes group. Because the two groups showed unequal variances, I ran a one-tailed Welch test and obtained a p-value effectively equal to zero. This result tells me that the higher BMI among people with diabetes is statistically significant.
+</p>
+      </div>
+    </section>
+
+    <!-- Section: Prevalence -->
+    <section id="prevalence">
+      <h2>Diabetes Prevalence by Age Group</h2>
+      <div class="paired-images">
+        <img src="images/prevalence_21_44_pie.png" alt="Pie Chart 21–44">
+        <img src="images/prevalence_45_64_pie.png" alt="Pie Chart 45–64">
+        <img src="images/prevalence_65_plus_pie.png" alt="Pie Chart 65+">
+      </div>
+      <p class="explanation">I calculated the diabetes rate in each age bracket by taking the mean of the binary Outcome (1 = diabetes, 0 = no diabetes) within each cohort. Here’s what I found:<br>
+In the 21-44 years group, 31.3 % of participants have diabetes.
+<br>
+
+In the 45-64 years group, 53.3 % of participants have diabetes.
+<br>
+
+In the 65 years and up group, 23.4 % of participants have diabetes.
+<br><br>
+</p>
+    </section>
+
+    <!-- Section: Correlation -->
+    <section id="glu" class="section-row">
+      <div class="img-wrapper">
+        <img src="images/glucose_insulin_scatter.png" alt="Glucose vs Insulin Scatter">
+      </div>
+      <div class="text-wrapper">
+        <h2># What’s the relationship between Glucose and Insulin?</h2>
+        <p>I began by exploring the relationship between insulin and glucose in the dataset. I created a scatter plot of each subject’s insulin level against their corresponding glucose reading, overlaying a regression line to highlight the overall trend.<br><br>
+
+To quantify how strongly these two measurements move together, I calculated Pearson’s correlation coefficient. The result was r = 0.323 with a two-tailed p value of 0, confirming that the upward tilt of the data points is highly unlikely to be due to chance.
+<br><br>
+Conclusion: The statistically significant positive correlation shows that, on average, higher insulin levels are associated with higher glucose concentrations. However, the moderate strength of the correlation (r ~ 0.32) and the wide scatter around the line indicate that additional factors also play important roles in determining glucose levels.
+</p>
+      </div>
+    </section>
+
+   
+    <section id="corr" class="section-row">
+      <div class="img-wrapper">
+        <img src="images/correlation_matrix.png" alt="Correlation Matrix">
+      </div>
+      <div class="text-wrapper">
+        <h2>Correlation Matrix</h2>
+        <p>I began by pulling together the eight predictors and computing their pairwise Pearson correlations to assess multicollinearity between the predictors.<br><br>
+
+The heatmap showed only low to moderate correlations (the strongest being around 0.54), so I kept all variables for modeling.
+</p>
+      </div>
+    </section>
+
+    <!-- Section: PCA -->
+    <section id="pca" class="section-row">
+      <div class="img-wrapper">
+        <img src="images/pca_scree.png" alt="PCA Scree Plot">
+      </div>
+      <div class="text-wrapper">
+        <h2>Principal Component Analysis (PCA)</h2>
+        <p>Next, I standardized each predictor and ran a principal component analysis. The scree plot that displays eigenvalues for each component and includes a horizontal line at eigenvalue equals one indicates three components above that threshold. This is the Kaiser criterion.<br><br>
+        However, when I computed the cumulative variance explained, I saw that I needed the first seven components to reach at least 90% of the total variance. Because my goal was to reduce the number of input dimensions while preserving most of the information, I decided to use those first seven principal components as my input variables. These components feed into my logistic regression model and preserve over 90% of the original variance using independent coordinates.
+        <br><br>
+Next, I moved on to predictive modeling. I first split my full data matrix into a training set and a test set, holding out thirty percent of the records for evaluation. On the training set, I applied a standard scaling transform so that each clinical variable had zero mean and unit variance. Then I ran principal component analysis and retained seven components that together explained over ninety percent of the total variance.
+
+        </p>
+      </div>
+    </section>
+
+    <!-- Section: ROC -->
+    <section id="roc" class="section-row">
+      <div class="img-wrapper">
+        <img src="images/roc_curve.png" alt="ROC Curve for PCA Model">
+      </div>
+      <div class="text-wrapper">
+        <h2>ROC Curve for Diabetes Prediction</h2>
+        <p>With that reduced feature set in hand, I trained a logistic regression model using balanced class weights to account for the unequal numbers of diabetic and non‑diabetic cases. After fitting the model, I generated probability scores on the held‑out test set and used those scores to compute the receiver operating characteristic curve. The area under that curve was 0.84, which indicates strong discrimination between cases with and without diabetes.<br><br>
+        The ROC curve itself rises steeply above the diagonal reference line, confirming that the model achieves high true positive rates at low false positive rates. In practical terms, this means I can flag a large fraction of true diabetes cases without generating excessive false alarms. The combination of dimensionality reduction via PCA and a regularized classifier thus delivers both efficiency and accuracy, and it sets the stage for comparing against a model built on the original eight predictors.
+        </p>
+      </div>
+    </section>
+
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+

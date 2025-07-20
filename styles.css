@@ -1,0 +1,72 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; line-height: 1.6; background: #f9f9f9; color: #333; }
+.container { max-width: 1200px; margin: auto; padding: 20px; }
+
+header { text-align: center; margin-bottom: 30px; }
+header h1 { font-size: 2em; }
+nav { display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; }
+nav a { margin: 5px 10px; text-decoration: none; color: #0066cc; padding: 8px 12px; border-radius: 4px; transition: background 0.3s; }
+nav a:hover { background: rgba(0, 102, 204, 0.1); }
+
+.section-row { display: flex; align-items: flex-start; flex-wrap: wrap; margin-bottom: 40px; }
+.section-row.reverse { flex-direction: row-reverse; }
+.img-wrapper, .text-wrapper { flex: 1; padding: 10px; }
+
+.paired-images img {
+  flex: 1;
+}
+.paired-images img {
+  flex: 1;
+  max-width: 32%;
+}
+.paired-images { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+.paired-images img { flex: 1; }
+.paired-images img.small-chart { flex: 0 0 40%; }
+
+section h2 { font-size: 1.4em; margin-bottom: 10px; }
+section img { width: 100%; height: auto; border: 1px solid #ddd; background: #fff; }
+.explanation { margin-top: 10px; }
+
+#theme-toggle { position: fixed; top: 20px; right: 20px; padding: 8px 12px; cursor: pointer; background: #fff; border: 1px solid #ccc; border-radius: 4px; }
+
+body.dark { background: #222; color: #ddd; }
+body.dark a { color: #66aaff; }
+body.dark img { background: #333; border-color: #444; }
+body.dark #theme-toggle { background: #333; color: #ddd; border-color: #555; }
+
+@media (max-width: 992px) {
+  .section-row {
+    flex-direction: column;
+  }
+  .img-wrapper, .text-wrapper {
+    width: 100%;
+    padding: 5px 0;
+  }
+  .paired-images {
+    gap: 8px;
+  }
+  .paired-images img {
+    max-width: 48%;
+  }
+}
+
+@media (max-width: 576px) {
+  nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  nav a {
+    flex: none;
+    margin: 5px 0;
+  }
+  .paired-images {
+    flex-direction: column;
+  }
+  .paired-images img {
+    max-width: 100%;
+  }
+  .img-wrapper, .text-wrapper {
+    padding: 5px;
+  }
+}
+
