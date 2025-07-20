@@ -1,6 +1,6 @@
-# View Live Server: [https://health-care-analytics.vercel.app/](https://health-care-analytics.vercel.app/)
-## Data source: [Kaggle](https://www.kaggle.com/datasets/nanditapore/healthcare-diabetes)<br>
-### Columns:<br>
+## View Live Server: [https://health-care-analytics.vercel.app/](https://health-care-analytics.vercel.app/)
+### Data source: [Kaggle](https://www.kaggle.com/datasets/nanditapore/healthcare-diabetes)<br>
+#### Columns:<br>
 - Id: Unique identifier for each data entry.<br>
 - Pregnancies: Number of times pregnant.<br>
 - Glucose: Plasma glucose concentration over 2 hours in an oral glucose tolerance test.<br>
